@@ -15,7 +15,7 @@
 #' @importFrom dplyr %>% mutate across select add_row
 #' @importFrom tidyr unnest
 #' @importFrom purrr map
-#' @importFrom tibble %>%
+#' @importFrom tibble rownames_to_column
 #' @importFrom stringr str_remove str_split str_locate str_c str_sub str_length
 #' @importFrom officer block_section read_docx body_add_par body_end_block_section
 #' @importFrom flextable flextable color padding add_footer_lines set_table_properties body_add_flextable
