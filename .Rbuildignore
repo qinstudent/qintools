@@ -1,0 +1,4 @@
+^renv$
+^renv\.lock$
+^qintools\.Rproj$
+^\.Rproj\.user$
