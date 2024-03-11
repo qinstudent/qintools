@@ -18,7 +18,7 @@
 #' @importFrom purrr map
 #' @importFrom tibble rownames_to_column
 #' @importFrom stringr str_remove str_split str_locate str_c str_sub str_length
-#' @importFrom officer block_section read_docx body_add_par body_end_block_section
+#' @importFrom officer block_section read_docx body_add_par body_end_block_section prop_section
 #' @importFrom flextable flextable color padding add_footer_lines set_table_properties body_add_flextable set_flextable_defaults italic bold align
 #' @importFrom survival Surv coxph
 qincox <- function(data=NULL,vars=NULL,time=NULL,status=NULL,reg = NULL,decimal = NULL,P_decimal = NULL,sig_P = NULL,CL = NULL,direction = NULL)
