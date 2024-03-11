@@ -13,7 +13,7 @@
 #' @param direction 逐步回归方向："both", "backward", "forward",参数缺失则不进行逐步回归
 #' @author qinstudent
 #' @export
-#' @importFrom dplyr %>% mutate across select add_row
+#' @importFrom dplyr %>% mutate across select add_row na_if
 #' @importFrom tidyr unnest
 #' @importFrom purrr map
 #' @importFrom tibble rownames_to_column
