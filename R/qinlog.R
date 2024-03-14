@@ -97,7 +97,7 @@ qinlog <- function(data=NULL,vars=NULL,y=NULL,reg = NULL,decimal = NULL,P_decima
     mul_reg_variable <- data.frame(mul_vars) %>%
       mutate(levels = map(data[mul_vars],levels)) %>%
       unnest(levels,keep_empty = T) %>%
-      mutate(rowname = paste0(mul_vars,levels))
+      mutate(rowname = ifelse(is.na(levels),mul_vars,paste0(mul_vars,levels)))
     mul_reg_merge <- merge(mul_reg_variable,mul_reg_model_sum,by="rowname",all=T)
     mul_reg_table <- mul_reg_merge[match(mul_reg_variable$rowname, mul_reg_merge$rowname),] %>% #merge数据框按x行序
       mutate(b = sprintf(paste0('%0.',decimal,'f'),Estimate),
@@ -154,7 +154,7 @@ qinlog <- function(data=NULL,vars=NULL,y=NULL,reg = NULL,decimal = NULL,P_decima
     mul_reg_variable2 <- data.frame(step_mul_vars) %>%
       mutate(levels = map(data[step_mul_vars],levels)) %>%
       unnest(levels,keep_empty = T) %>%
-      mutate(rowname = paste0(step_mul_vars,levels))
+      mutate(rowname = ifelse(is.na(levels),mul_vars,paste0(mul_vars,levels)))
     mul_reg_merge2 <- merge(mul_reg_variable2,step_mul_reg_model_sum,by="rowname",all=T)
     mul_reg_table2 <- mul_reg_merge2[match(mul_reg_variable2$rowname, mul_reg_merge2$rowname),] %>% #merge数据框按x行序
       mutate(b = sprintf(paste0('%0.',decimal,'f'),Estimate),
