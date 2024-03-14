@@ -139,7 +139,7 @@ qincox <- function(data=NULL,vars=NULL,time=NULL,status=NULL,reg = NULL,decimal 
                 P="",.before = i)}
     catrow_mtable2 <- which(duplicated(mul_reg_table$Variables))
     mul_reg_table[catrow_mtable2,"Variables"] <- "  "
-    mul_reg_table <- mul_reg_table %>% mutate(Variables = paste0(Variables,levels)) %>% select(-levels)
+    mul_reg_table <- mul_reg_table %>% mutate(Variables = ifelse(is.na(levels),Variables,paste0(Variables,levels))) %>% select(-levels)
     mul_reg_table$Variables <- gsub("\t","  ",mul_reg_table$Variables)
     names(mul_reg_table)[6] <- paste0("HR(",CL*100,"%CI)")
     mul_reg_table$`b` <- na_if(mul_reg_table$`b`, "NA")
@@ -196,7 +196,7 @@ qincox <- function(data=NULL,vars=NULL,time=NULL,status=NULL,reg = NULL,decimal 
         add_row(Variables = mul_reg_table2[i,1],levels = "",.before = i)}
     step_catrow_mtable2 <- which(duplicated(mul_reg_table2$Variables))
     mul_reg_table2[step_catrow_mtable2,"Variables"] <- "  "
-    mul_reg_table2 <- mul_reg_table2 %>% mutate(Variables = paste0(Variables,levels)) %>% select(-levels)
+    mul_reg_table2 <- mul_reg_table2 %>% mutate(Variables = ifelse(is.na(levels),Variables,paste0(Variables,levels))) %>% select(-levels)
     mul_reg_table2$Variables <- gsub("\t","  ",mul_reg_table2$Variables)
     names(mul_reg_table2)[6] <- paste0("HR(",CL*100,"%CI)")
     mul_reg_table2$`b` <- na_if(mul_reg_table2$`b`, "NA")
