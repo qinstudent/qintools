@@ -95,7 +95,7 @@ qinlin <- function(data=NULL,vars=NULL,y=NULL,reg = NULL,decimal = NULL,P_decima
     mul_reg_model <- lm(as.formula(paste0(y,"~",paste(mul_vars,collapse = "+"))),data = data)
     mul_reg_model_sum <- summary(mul_reg_model) %>% coefficients %>% as.data.frame %>% rownames_to_column %>% mutate(exp_b = exp(Estimate))
     mul_reg_variable <- data.frame(mul_vars) %>%
-      mutate(levels = map(data[mul_vars],levels)) %>%
+      mutate(levels = map(data[mul_vars],~ifelse(is.null(levels(.)),"",levels(.)))) %>%
       unnest(levels) %>%
       mutate(rowname = paste0(mul_vars,levels))
     mul_reg_merge <- merge(mul_reg_variable,mul_reg_model_sum,by="rowname",all=T)
@@ -152,7 +152,7 @@ qinlin <- function(data=NULL,vars=NULL,y=NULL,reg = NULL,decimal = NULL,P_decima
     step_mul_vars <- str_sub(step_mul_reg_model_call[2],str_locate(step_mul_reg_model_call[2],pattern = "~")[1,1]+2,str_length(step_mul_reg_model_call[2])) %>%
       str_split(pattern = " \\+ ",simplify = T) %>% as.vector
     mul_reg_variable2 <- data.frame(step_mul_vars) %>%
-      mutate(levels = map(data[step_mul_vars],levels)) %>%
+      mutate(levels = map(data[step_mul_vars],~ifelse(is.null(levels(.)),"",levels(.)))) %>%
       unnest(levels) %>%
       mutate(rowname = paste0(step_mul_vars,levels))
     mul_reg_merge2 <- merge(mul_reg_variable2,step_mul_reg_model_sum,by="rowname",all=T)
@@ -242,7 +242,7 @@ qinlin <- function(data=NULL,vars=NULL,y=NULL,reg = NULL,decimal = NULL,P_decima
     describe <- ifelse(length(sig_vars_description)==0,"",paste0(na.omit(describe_out),collapse = "\n"))
     final_out <- ifelse(length(vars[!vars %in% sig_vars_description])==0,"",
                         paste0(paste0(vars[!vars %in% sig_vars_description],collapse = "、"),
-                               "与结局的发生可能性无关。"))
+                               "与结局不相关。"))
 
     flextable(reg_table,col_keys = names(reg_table)[-(7:9)],defaults = tibble(),theme_fun = theme_booktabs) %>%
       align(align = "left" ,part = "all") %>% #居左
@@ -300,7 +300,7 @@ qinlin <- function(data=NULL,vars=NULL,y=NULL,reg = NULL,decimal = NULL,P_decima
     describe <- ifelse(length(mul_sig_vars_description)==0,"",paste0(na.omit(describe_out),collapse = "\n"))
     final_out <- ifelse(length(vars[!vars %in% mul_sig_vars_description])==0,"",
                         paste0(paste0(vars[!vars %in% mul_sig_vars_description],collapse = "、"),
-                               "与结局的发生可能性无关。"))
+                               "与结局不相关。"))
 
     flextable(mul_reg_table,col_keys = names(mul_reg_table)[-(7:9)],defaults = tibble(),theme_fun = theme_booktabs) %>%
       align(align = "left" ,part = "all") %>% #居左
@@ -359,7 +359,7 @@ qinlin <- function(data=NULL,vars=NULL,y=NULL,reg = NULL,decimal = NULL,P_decima
     describe <- ifelse(length(mul_sig_vars_description)==0,"",paste0(na.omit(describe_out),collapse = "\n"))
     final_out <- ifelse(length(vars[!vars %in% mul_sig_vars_description])==0,"",
                         paste0(paste0(vars[!vars %in% mul_sig_vars_description],collapse = "、"),
-                               "与结局的发生可能性无关。"))
+                               "与结局不相关。"))
 
 
     flextable(mul_reg_table2,col_keys = names(mul_reg_table2)[-(7:9)],defaults = tibble(),theme_fun = theme_booktabs) %>%
@@ -419,7 +419,7 @@ qinlin <- function(data=NULL,vars=NULL,y=NULL,reg = NULL,decimal = NULL,P_decima
     describe <- ifelse(length(sig_vars_description)==0,"",paste0(na.omit(describe_out),collapse = "\n"))
     final_out <- ifelse(length(vars[!vars %in% sig_vars_description])==0,"",
                         paste0(paste0(vars[!vars %in% sig_vars_description],collapse = "、"),
-                               "与结局的发生可能性无关。"))
+                               "与结局不相关。"))
     final_describe <- paste0(first_out,na.omit(describe),na.omit(final_out),collapse = "\n")
 
     ll2 <- mul_reg_table
@@ -456,7 +456,7 @@ qinlin <- function(data=NULL,vars=NULL,y=NULL,reg = NULL,decimal = NULL,P_decima
     describe2 <- ifelse(length(mul_sig_vars_description)==0,"",paste0(na.omit(describe_out),collapse = "\n"))
     final_out2 <- ifelse(length(sig_vars[!sig_vars %in% mul_sig_vars_description])==0,"",
                         paste0(paste0(sig_vars[!sig_vars %in% mul_sig_vars_description],collapse = "、"),
-                               "与结局的发生可能性无关。"))
+                               "与结局不相关。"))
 
 
     if(!require("gridExtra")) install.packages("gridExtra")
@@ -544,7 +544,7 @@ qinlin <- function(data=NULL,vars=NULL,y=NULL,reg = NULL,decimal = NULL,P_decima
     describe <- ifelse(length(sig_vars_description)==0,"",paste0(na.omit(describe_out),collapse = "\n"))
     final_out <- ifelse(length(vars[!vars %in% sig_vars_description])==0,"",
                         paste0(paste0(vars[!vars %in% sig_vars_description],collapse = "、"),
-                               "与结局的发生可能性无关。"))
+                               "与结局不相关。"))
     final_describe <- paste0(first_out,na.omit(describe),na.omit(final_out),collapse = "\n")
 
     ll2 <- mul_reg_table2
@@ -581,7 +581,7 @@ qinlin <- function(data=NULL,vars=NULL,y=NULL,reg = NULL,decimal = NULL,P_decima
     describe2 <- ifelse(length(mul_sig_vars_description)==0,"",paste0(na.omit(describe_out),collapse = "\n"))
     final_out2 <- ifelse(length(sig_vars[!sig_vars %in% mul_sig_vars_description])==0,"",
                         paste0(paste0(sig_vars[!sig_vars %in% mul_sig_vars_description],collapse = "、"),
-                               "与结局的发生可能性无关。"))
+                               "与结局不相关。"))
 
 
 

@@ -95,7 +95,7 @@ qinlog <- function(data=NULL,vars=NULL,y=NULL,reg = NULL,decimal = NULL,P_decima
     mul_reg_model <- glm(as.formula(paste0(y,"~",paste(mul_vars,collapse = "+"))),data = data,family = binomial())
     mul_reg_model_sum <- summary(mul_reg_model) %>% coefficients %>% as.data.frame %>% rownames_to_column %>% mutate(exp_b = exp(Estimate))
     mul_reg_variable <- data.frame(mul_vars) %>%
-      mutate(levels = map(data[mul_vars],levels)) %>%
+      mutate(levels = map(data[mul_vars],~ifelse(is.null(levels(.)),"",levels(.)))) %>%
       unnest(levels) %>%
       mutate(rowname = paste0(mul_vars,levels))
     mul_reg_merge <- merge(mul_reg_variable,mul_reg_model_sum,by="rowname",all=T)
@@ -152,7 +152,7 @@ qinlog <- function(data=NULL,vars=NULL,y=NULL,reg = NULL,decimal = NULL,P_decima
     step_mul_vars <- str_sub(step_mul_reg_model_call[2],str_locate(step_mul_reg_model_call[2],pattern = "~")[1,1]+2,str_length(step_mul_reg_model_call[2])) %>%
       str_split(pattern = " \\+ ",simplify = T) %>% as.vector
     mul_reg_variable2 <- data.frame(step_mul_vars) %>%
-      mutate(levels = map(data[step_mul_vars],levels)) %>%
+      mutate(levels = map(data[step_mul_vars],~ifelse(is.null(levels(.)),"",levels(.)))) %>%
       unnest(levels) %>%
       mutate(rowname = paste0(step_mul_vars,levels))
     mul_reg_merge2 <- merge(mul_reg_variable2,step_mul_reg_model_sum,by="rowname",all=T)
